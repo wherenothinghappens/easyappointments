@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   database:
     image: mysql
@@ -8,6 +8,8 @@ services:
       - MYSQL_DATABASE=easyapp
       - MYSQL_USER=easyapp
       - MYSQL_PASSWORD=veryhardpassword
+    volumes:
+      - ../files/mysql:/var/lib/mysql
 
   application:
     image: easyappointments
@@ -17,7 +19,7 @@ services:
       - ./src:/var/www/html
     command: dev
     ports:
-      - ${APP_HOST}:80:80
+      - ${APP_HOST}:1995:80
     environment:
       - DB_HOST=database:3306
       - APP_URL=localhost
