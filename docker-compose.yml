@@ -8,8 +8,8 @@ services:
       - MYSQL_DATABASE=easyapp
       - MYSQL_USER=easyapp
       - MYSQL_PASSWORD=veryhardpassword
-    volumes:
-      - ../files/mysql:/var/lib/mysql
+    # volumes:
+    #   - ../files/mysql:/var/lib/mysql
 
   application:
     image: easyappointments
