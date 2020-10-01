@@ -68,28 +68,28 @@ class Installation extends CI_Controller {
     {
         try
         {
-            if (is_ea_installed())
-            {
-                return;
-            }
+            // if (is_ea_installed())
+            // {
+            //     return;
+            // }
 
-            // Create E!A database structure.
-            $file_contents = file_get_contents(dirname(BASEPATH) . '/assets/sql/structure.sql');
-            $sql_queries = explode(';', $file_contents);
-            array_pop($sql_queries);
-            foreach ($sql_queries as $query)
-            {
-                $this->db->query($query);
-            }
+            // // Create E!A database structure.
+            // $file_contents = file_get_contents(dirname(BASEPATH) . '/assets/sql/structure.sql');
+            // $sql_queries = explode(';', $file_contents);
+            // array_pop($sql_queries);
+            // foreach ($sql_queries as $query)
+            // {
+            //     $this->db->query($query);
+            // }
 
-            // Insert default E!A entries into the database.
-            $file_contents = file_get_contents(dirname(BASEPATH) . '/assets/sql/data.sql');
-            $sql_queries = explode(';', $file_contents);
-            array_pop($sql_queries);
-            foreach ($sql_queries as $query)
-            {
-                $this->db->query($query);
-            }
+            // // Insert default E!A entries into the database.
+            // $file_contents = file_get_contents(dirname(BASEPATH) . '/assets/sql/data.sql');
+            // $sql_queries = explode(';', $file_contents);
+            // array_pop($sql_queries);
+            // foreach ($sql_queries as $query)
+            // {
+            //     $this->db->query($query);
+            // }
 
             // Insert admin
             $this->load->model('admins_model');
