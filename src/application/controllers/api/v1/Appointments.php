@@ -83,6 +83,43 @@ class Appointments extends API_V1_Controller {
         }
     }
 
+    public function provider($id_provider = NULL)
+    {
+        try
+        {
+            $conditions = [
+                'is_unavailable' => FALSE
+            ];
+
+            if ($id_provider !== NULL)
+            {
+                $conditions['id_users_provider'] = $id_provider;
+            }
+
+            $appointments = $this->appointments_model->get_batch($conditions, array_key_exists('aggregates', $_GET));
+
+            if ($id_provider !== NULL && count($appointments) === 0)
+            {
+                $this->_throwRecordNotFound();
+            }
+
+            $response = new Response($appointments);
+
+            $response->encode($this->parser)
+                ->search()
+                ->sort()
+                ->paginate()
+                ->minimize()
+                ->singleEntry($id_provider)
+                ->output();
+
+        }
+        catch (\Exception $exception)
+        {
+            exit($this->_handleException($exception));
+        }
+    }
+
     /**
      * POST API Method
      */
