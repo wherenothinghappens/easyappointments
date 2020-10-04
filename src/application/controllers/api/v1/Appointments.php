@@ -17,6 +17,8 @@ use \EA\Engine\Api\V1\Response;
 use \EA\Engine\Api\V1\Request;
 use \EA\Engine\Types\NonEmptyText;
 
+use \EA\Engine\Types\UnsignedInteger;
+
 /**
  * Appointments Controller
  *
@@ -83,22 +85,45 @@ class Appointments extends API_V1_Controller {
         }
     }
 
-    public function provider($id_provider = NULL)
+    public function provider()
     {
         try
         {
-            $conditions = [
-                'is_unavailable' => FALSE
-            ];
+            $providerId = new UnsignedInteger($this->input->get('providerId'));
 
-            if ($id_provider !== NULL)
+            $serviceId = new UnsignedInteger($this->input->get('serviceId'));
+
+            $startDate = new DateTime($this->input->get('startDate'));
+
+            $endDate = new DateTime($this->input->get('endDate'));
+
+            $conditions = ['is_unavailable' => FALSE];
+
+            if ($providerId !== NULL)
             {
-                $conditions['id_users_provider'] = $id_provider;
+                $conditions['id_users_provider'] = $providerId;
             }
+
+            // if ($serviceId !== NULL)
+            // {
+            //     $conditions['id_services'] =+ $serviceId;
+            // }
+
+            // if ($startDate !== NULL)
+            // {
+            //     $conditions['start_datetime'] =+ $startDate->format('Y-m-d');
+            // }
+
+            // if ($endDate !== NULL)
+            // {
+            //     $conditions['end_datetime'] =+ $endDate->format('Y-m-d');
+            // }
+
+
 
             $appointments = $this->appointments_model->get_batch($conditions, array_key_exists('aggregates', $_GET));
 
-            if ($id_provider !== NULL && count($appointments) === 0)
+            if ($providerId !== NULL && count($appointments) === 0)
             {
                 $this->_throwRecordNotFound();
             }
@@ -110,7 +135,7 @@ class Appointments extends API_V1_Controller {
                 ->sort()
                 ->paginate()
                 ->minimize()
-                ->singleEntry($id_provider)
+                ->singleEntry($providerId)
                 ->output();
 
         }
