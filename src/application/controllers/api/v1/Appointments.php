@@ -93,9 +93,9 @@ class Appointments extends API_V1_Controller {
 
             $serviceId = $this->input->get('serviceId');
 
-            $startDate = new DateTime($this->input->get('startDate'));
+            $startDate = $this->input->get('startDate');
 
-            $endDate = new DateTime($this->input->get('endDate'));
+            $endDate = $this->input->get('endDate');
 
             $conditions = ['is_unavailable' => FALSE];
 
@@ -111,12 +111,14 @@ class Appointments extends API_V1_Controller {
 
             if ($startDate !== NULL)
             {
-                $conditions['start_datetime >='] = $startDate->format('Y-m-d h:i:s');
+                $convert = new DateTime($startDate);
+                $conditions['start_datetime >='] = $convert->format('Y-m-d h:i:s');
             }
 
             if ($endDate !== NULL)
             {
-                $conditions['end_datetime <='] = $endDate->format('Y-m-d h:i:s');
+                $convert = new DateTime($endDate);
+                $conditions['end_datetime <='] = $convert->format('Y-m-d h:i:s');
             }
 
             $appointments = $this->appointments_model->get_batch($conditions, array_key_exists('aggregates', $_GET));
