@@ -112,13 +112,13 @@ class Appointments extends API_V1_Controller {
             if ($startDate !== NULL)
             {
                 $convert = new DateTime($startDate);
-                $conditions['start_datetime >='] = $convert->format('Y-m-d h:i:s');
+                $conditions['start_datetime >='] = $convert->format('Y-m-d H:i:s');
             }
 
             if ($endDate !== NULL)
             {
                 $convert = new DateTime($endDate);
-                $conditions['end_datetime <='] = $convert->format('Y-m-d h:i:s');
+                $conditions['end_datetime <='] = $convert->format('Y-m-d H:i:s');
             }
 
             $appointments = $this->appointments_model->get_batch($conditions, array_key_exists('aggregates', $_GET));
