@@ -133,7 +133,7 @@ class Appointments extends API_V1_Controller {
                 ->sort()
                 ->paginate()
                 ->minimize()
-                ->singleEntry($providerId)
+                // ->singleEntry($providerId)
                 ->output();
 
         }
