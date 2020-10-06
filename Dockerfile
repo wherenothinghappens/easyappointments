@@ -3,7 +3,7 @@ FROM php:7.4.2-apache
 RUN pecl install xdebug && docker-php-ext-enable xdebug \
     # not yet in linux: xdebug.remote_host = host.docker.internal \n\
     && echo "\n\
-    xdebug.remote_host = 172.29.240.1 \n\
+    xdebug.remote_host = 172.25.224.1 \n\
     xdebug.default_enable = 1 \n\
     xdebug.remote_autostart = 1 \n\
     xdebug.remote_connect_back = 0 \n\

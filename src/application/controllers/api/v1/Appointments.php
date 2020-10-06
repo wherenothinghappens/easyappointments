@@ -89,9 +89,9 @@ class Appointments extends API_V1_Controller {
     {
         try
         {
-            $providerId = new UnsignedInteger($this->input->get('providerId'));
+            $providerId = $this->input->get('providerId');
 
-            $serviceId = new UnsignedInteger($this->input->get('serviceId'));
+            $serviceId = $this->input->get('serviceId');
 
             $startDate = new DateTime($this->input->get('startDate'));
 
@@ -104,22 +104,20 @@ class Appointments extends API_V1_Controller {
                 $conditions['id_users_provider'] = $providerId;
             }
 
-            // if ($serviceId !== NULL)
-            // {
-            //     $conditions['id_services'] =+ $serviceId;
-            // }
+            if ($serviceId !== NULL)
+            {
+                $conditions['id_services'] = $serviceId;
+            }
 
-            // if ($startDate !== NULL)
-            // {
-            //     $conditions['start_datetime'] =+ $startDate->format('Y-m-d');
-            // }
+            if ($startDate !== NULL)
+            {
+                $conditions['start_datetime >='] = $startDate->format('Y-m-d h:i:s');
+            }
 
-            // if ($endDate !== NULL)
-            // {
-            //     $conditions['end_datetime'] =+ $endDate->format('Y-m-d');
-            // }
-
-
+            if ($endDate !== NULL)
+            {
+                $conditions['end_datetime <='] = $endDate->format('Y-m-d h:i:s');
+            }
 
             $appointments = $this->appointments_model->get_batch($conditions, array_key_exists('aggregates', $_GET));
 
