@@ -75,6 +75,59 @@ class Unavailabilities extends API_V1_Controller {
         }
     }
 
+    public function provider()
+    {
+        try
+        {
+            $providerId = $this->input->get('providerId');
+
+            $startDate = $this->input->get('startDate');
+
+            $endDate = $this->input->get('endDate');
+
+            $conditions = ['is_unavailable' => TRUE];
+
+            if ($providerId !== NULL)
+            {
+                $conditions['id_users_provider'] = $providerId;
+            }
+
+            if ($startDate !== NULL)
+            {
+                $convert = new DateTime($startDate);
+                $conditions['start_datetime >='] = $convert->format('Y-m-d H:i:s');
+            }
+
+            if ($endDate !== NULL)
+            {
+                $convert = new DateTime($endDate);
+                $conditions['end_datetime <='] = $convert->format('Y-m-d H:i:s');
+            }
+
+            $unavailabilities = $this->appointments_model->get_batch($conditions, array_key_exists('aggregates', $_GET));
+
+            if ($providerId !== NULL && count($unavailabilities) === 0)
+            {
+                $this->_throwRecordNotFound();
+            }
+
+            $response = new Response($unavailabilities);
+
+            $response->encode($this->parser)
+                ->search()
+                ->sort()
+                ->paginate()
+                ->minimize()
+                // ->singleEntry($id)
+                ->output();
+
+        }
+        catch (\Exception $exception)
+        {
+            exit($this->_handleException($exception));
+        }
+    }
+
     /**
      * POST API Method
      */
